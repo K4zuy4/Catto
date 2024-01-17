@@ -102,14 +102,6 @@ public class Main {
             catLabel.setIcon(meowIcon);
             meowTimer.start();
 
-            /*try {
-                String programPath = "C:\\Windows\\System32\\notepad.exe";
-                ProcessBuilder processBuilder = new ProcessBuilder(programPath);
-                processBuilder.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-
             Point catPosition = frame.getLocation();
             int x = catPosition.x + catLabel.getWidth() + 1000;
             int y = catPosition.y;
