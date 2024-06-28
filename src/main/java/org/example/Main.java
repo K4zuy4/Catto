@@ -4,16 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Random;
 
 public class Main {
-    public static String filepath;
-    public static String websiteURL;
     private static final int SPEED = 5;
     private static final int RADIUS = 50;
     private static ImageIcon idleIconRight;
@@ -42,15 +35,10 @@ public class Main {
         frame = new JFrame();
         loadIcons();
 
-        Random random = new Random();
-
         catLabel = new JLabel(idleIconRight);
         frame.setUndecorated(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setAlwaysOnTop(true);
-        int randomX = random.nextInt(1921);
-        int randomY = random.nextInt(1081);
-        frame.setLocation(randomX, randomY);
         frame.setType(Window.Type.UTILITY);
         frame.setBackground(new Color(0, 0, 0, 0));
         frame.getContentPane().add(catLabel);
@@ -66,11 +54,7 @@ public class Main {
         catLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getButton() == MouseEvent.BUTTON1) {
-                    handleMouseClick();
-                } else {
-                    openMneu();
-                }
+                handleMouseClick();
             }
         });
 
@@ -107,71 +91,6 @@ public class Main {
         });
     }
 
-    private static void openMneu() {
-        JPopupMenu menu = new JPopupMenu();
-        JMenuItem exit = new JMenuItem("Exit");
-        JMenuItem programm = new JMenuItem("Programm auswählen");
-        JMenuItem website = new JMenuItem("Website auswählen");
-        exit.addActionListener(e -> System.exit(0));
-        programm.addActionListener(e -> chooseProgram());
-        website.addActionListener(e -> chooseWebsite());
-        menu.add(exit);
-        menu.add(programm);
-        menu.add(website);
-        menu.show(catLabel, 0, 0);
-    }
-
-    private static void chooseProgram() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
-            public boolean accept(java.io.File f) {
-                if (f.isDirectory()) {
-                    return true;
-                }
-                return f.getName().endsWith(".exe");
-            }
-
-            public String getDescription() {
-                return "Executable files (*.exe)";
-            }
-        });
-        fileChooser.showOpenDialog(null);
-        String programPath = fileChooser.getSelectedFile().getAbsolutePath();
-        try {
-            Files.write(Paths.get("Programm.txt"), programPath.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private static void chooseWebsite() {
-    JDialog dialog = new JDialog(frame, "Website eingeben", true);
-    dialog.setLayout(new FlowLayout());
-
-    JTextField website = new JTextField(20);
-
-    JButton submitButton = new JButton("Submit");
-    submitButton.addActionListener(e -> {
-        websiteURL = website.getText();
-        try {
-            Files.write(Paths.get("Website.txt"), websiteURL.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        dialog.dispose();
-    });
-
-    dialog.add(website);
-    dialog.add(submitButton);
-
-    dialog.setSize(300, 100);
-
-    dialog.setLocationRelativeTo(catLabel);
-
-    dialog.setVisible(true);
-    }
-
     private static void handleMouseClick() {
         if (catLabel.getIcon() == sleepingIcon) {
             catLabel.setIcon(standUpIcon);
@@ -183,34 +102,13 @@ public class Main {
             catLabel.setIcon(meowIcon);
             meowTimer.start();
 
-            try {
-                try {
-                    java.util.List<String> lines = Files.readAllLines(Paths.get("Programm.txt"), StandardCharsets.UTF_8);
-                    for (String line : lines) {
-                        filepath = line;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                ProcessBuilder processBuilder = new ProcessBuilder(filepath);
+            /*try {
+                String programPath = "C:\\Windows\\System32\\notepad.exe";
+                ProcessBuilder processBuilder = new ProcessBuilder(programPath);
                 processBuilder.start();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-
-            try {
-                try {
-                    java.util.List<String> lines = Files.readAllLines(Paths.get("Website.txt"), StandardCharsets.UTF_8);
-                    for (String line : lines) {
-                        websiteURL = line;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Desktop.getDesktop().browse(new URL(websiteURL).toURI());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            }*/
 
             Point catPosition = frame.getLocation();
             int x = catPosition.x + catLabel.getWidth() + 1000;
