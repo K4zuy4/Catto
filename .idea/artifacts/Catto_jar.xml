@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Catto:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Catto_jar</output-path>
+    <root id="archive" name="Catto.jar">
+      <element id="module-output" name="Catto" />
+    </root>
+  </artifact>
+</component>
