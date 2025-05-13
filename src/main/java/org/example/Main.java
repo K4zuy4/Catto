@@ -83,7 +83,7 @@ public class Main {
             stretchingTimer.stop();
             returnToIdleTimer.start();
         });
-
+//
         standUpTimer = new Timer(2080, e -> {
             setCatIdleIcon();
             standUpTimer.stop();
